@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/date_symbol_data_local.dart';
 
 import 'package:money_record/config/app_color.dart';
 import 'package:money_record/config/session.dart';
@@ -8,7 +9,10 @@ import 'package:money_record/presentation/page/auth/login_page.dart';
 import 'package:money_record/presentation/page/home_page.dart';
 
 void main() {
-  runApp(const MyApp());
+ WidgetsFlutterBinding.ensureInitialized();
+ initializeDateFormatting('id_ID').then((value) {
+   runApp(const MyApp());
+ });
 }
 
 class MyApp extends StatelessWidget {
