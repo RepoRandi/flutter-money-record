@@ -48,7 +48,6 @@ class _LoginPageState extends State<LoginPage> {
                                 AutovalidateMode.onUserInteraction,
                             style: const TextStyle(
                               color: Colors.white,
-                              fontSize: 16,
                             ),
                             decoration: InputDecoration(
                               fillColor: AppColor.primary.withOpacity(0.5),
@@ -76,7 +75,6 @@ class _LoginPageState extends State<LoginPage> {
                             obscureText: true,
                             style: const TextStyle(
                               color: Colors.white,
-                              fontSize: 16,
                             ),
                             decoration: InputDecoration(
                               fillColor: AppColor.primary.withOpacity(0.5),
