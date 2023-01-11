@@ -9,10 +9,10 @@ import 'package:money_record/presentation/page/auth/login_page.dart';
 import 'package:money_record/presentation/page/home_page.dart';
 
 void main() {
- WidgetsFlutterBinding.ensureInitialized();
- initializeDateFormatting('id_ID').then((value) {
-   runApp(const MyApp());
- });
+  WidgetsFlutterBinding.ensureInitialized();
+  initializeDateFormatting('id_ID').then((value) {
+    runApp(const MyApp());
+  });
 }
 
 class MyApp extends StatelessWidget {
@@ -32,11 +32,15 @@ class MyApp extends StatelessWidget {
           backgroundColor: AppColor.primary,
           foregroundColor: Colors.white,
         ),
+        inputDecorationTheme: const InputDecorationTheme(
+          labelStyle: TextStyle(color: Colors.black),
+          hintStyle: TextStyle(color: Colors.white),
+        ),
       ),
-      home:FutureBuilder(
+      home: FutureBuilder(
         future: Session.getUser(),
-        builder: (context,AsyncSnapshot<User?> snapshot) {
-          if(snapshot.data != null && snapshot.data!.idUser != null) {
+        builder: (context, AsyncSnapshot<User?> snapshot) {
+          if (snapshot.data != null && snapshot.data!.idUser != null) {
             return const HomePage();
           }
           return const LoginPage();
