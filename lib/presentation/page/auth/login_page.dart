@@ -1,11 +1,10 @@
-import 'package:d_info/d_info.dart';
 import 'package:d_view/d_view.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:money_record/config/app_asset.dart';
 import 'package:money_record/config/app_color.dart';
 import 'package:money_record/data/source/source_user.dart';
-import 'package:money_record/presentation/page/home_page.dart';
+import 'package:money_record/presentation/page/auth/register_page.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -21,20 +20,7 @@ class _LoginPageState extends State<LoginPage> {
 
   login() async {
     if (formKey.currentState!.validate()) {
-      bool success =
-          await SourceUser.login(controllerEmail.text, controllerPassword.text);
-      if (success) {
-        DInfo.dialogSuccess(context, 'Berhasil Login');
-        DInfo.closeDialog(
-          context,
-          actionAfterClose: () {
-            Get.off(() => HomePage());
-          }
-        );
-      } else {
-        DInfo.dialogError(context, 'Gagal login');
-        DInfo.closeDialog(context);
-      }
+      await SourceUser.login(controllerEmail.text, controllerPassword.text);
     }
   }
 
@@ -146,7 +132,7 @@ class _LoginPageState extends State<LoginPage> {
                           ),
                         ),
                         GestureDetector(
-                          onTap: () {},
+                          onTap: () => Get.to(() => const RegisterPage()),
                           child: const Text(
                             'Register',
                             style: TextStyle(
