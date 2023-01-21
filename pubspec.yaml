@@ -43,6 +43,7 @@ dependencies:
   intl: ^0.18.0
   d_view: ^0.0.3
   d_info: ^0.2.0
+  fluttertoast: ^8.1.2
 
 dev_dependencies:
   flutter_test:
