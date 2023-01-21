@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'package:get/get.dart';
-import 'package:get/route_manager.dart';
 import 'package:money_record/presentation/controller/c_user.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:money_record/data/model/user.dart';
