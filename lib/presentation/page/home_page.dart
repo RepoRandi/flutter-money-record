@@ -37,7 +37,7 @@ class _HomePageState extends State<HomePage> {
           children: [
             DrawerHeader(
               margin: const EdgeInsets.only(bottom: 0),
-              padding: EdgeInsets.fromLTRB(20, 16, 16, 20),
+              padding: const EdgeInsets.fromLTRB(20, 16, 16, 20),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.end,
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -206,7 +206,7 @@ class _HomePageState extends State<HomePage> {
             child: ListView(
               padding: const EdgeInsets.fromLTRB(20, 0, 20, 30),
               children: [
-                Text(
+                const Text(
                   'Pengeluaran Hari Ini',
                   style: TextStyle(
                     fontSize: 18,
@@ -226,7 +226,7 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ),
                 DView.spaceHeight(30),
-                Text(
+                const Text(
                   'Pengeluaran Minggu Ini',
                   style: TextStyle(
                     fontSize: 18,
@@ -236,7 +236,7 @@ class _HomePageState extends State<HomePage> {
                 DView.spaceHeight(),
                 weekly(),
                 DView.spaceHeight(30),
-                Text(
+                const Text(
                   'Perbandingan Bulan Ini',
                   style: TextStyle(
                     fontSize: 18,
@@ -266,7 +266,7 @@ class _HomePageState extends State<HomePage> {
             child: Obx(() {
               return Text(
                 AppFormat.currency(cHome.today.toString()),
-                style: TextStyle(
+                style: const TextStyle(
                   fontSize: 30,
                   fontWeight: FontWeight.bold,
                   color: AppColor.secondary,
@@ -279,7 +279,7 @@ class _HomePageState extends State<HomePage> {
             child: Obx(() {
               return Text(
                 cHome.todayPercent,
-                style: TextStyle(
+                style: const TextStyle(
                   fontSize: 16,
                   color: AppColor.chart,
                 ),
@@ -287,9 +287,9 @@ class _HomePageState extends State<HomePage> {
             }),
           ),
           Container(
-            margin: EdgeInsets.fromLTRB(16, 20, 0, 20),
-            padding: EdgeInsets.only(top: 6, right: 6, bottom: 6),
-            decoration: BoxDecoration(
+            margin: const EdgeInsets.fromLTRB(16, 20, 0, 20),
+            padding: const EdgeInsets.only(top: 6, right: 6, bottom: 6),
+            decoration: const BoxDecoration(
               color: AppColor.white,
               borderRadius: BorderRadius.only(
                 topLeft: Radius.circular(6),
@@ -298,7 +298,7 @@ class _HomePageState extends State<HomePage> {
             ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.end,
-              children: [
+              children: const [
                 Text(
                   'Selengkapnya',
                   style: TextStyle(
