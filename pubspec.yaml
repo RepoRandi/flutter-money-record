@@ -45,6 +45,7 @@ dependencies:
   d_info: ^0.2.0
   fluttertoast: ^8.1.2
   d_chart: ^1.0.1
+  d_input: ^0.0.2
 
 dev_dependencies:
   flutter_test:
