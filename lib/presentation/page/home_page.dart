@@ -11,6 +11,7 @@ import 'package:money_record/config/session.dart';
 import 'package:money_record/presentation/controller/c_home.dart';
 import 'package:money_record/presentation/controller/c_user.dart';
 import 'package:money_record/presentation/page/auth/login_page.dart';
+import 'package:money_record/presentation/page/history/add_history_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -32,125 +33,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      endDrawer: Drawer(
-        child: ListView(
-          children: [
-            DrawerHeader(
-              margin: const EdgeInsets.only(bottom: 0),
-              padding: const EdgeInsets.fromLTRB(20, 16, 16, 20),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.end,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    children: [
-                      Image.asset(AppAsset.profile),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Obx(
-                            () => Text(
-                              cUser.data.name ?? '',
-                              style: const TextStyle(
-                                fontSize: 20,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ),
-                          Obx(
-                            () => Text(
-                              cUser.data.email ?? '',
-                              style: const TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.w400,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                  DView.spaceHeight(),
-                  Material(
-                    color: AppColor.primary,
-                    borderRadius: BorderRadius.circular(30),
-                    child: InkWell(
-                      onTap: () async {
-                        Session.clearUser();
-                        bool? yes = await DInfo.dialogConfirmation(context,
-                            'Logout', 'You sure logout from this account');
-                        if (yes ?? false) {
-                          Fluttertoast.showToast(
-                              msg: "Logout berhasil",
-                              toastLength: Toast.LENGTH_SHORT,
-                              gravity: ToastGravity.BOTTOM,
-                              timeInSecForIosWeb: 1,
-                              backgroundColor: AppColor.green,
-                              textColor: AppColor.white,
-                              fontSize: 16.0);
-                          Get.off(() => const LoginPage());
-                        }
-                      },
-                      borderRadius: BorderRadius.circular(30),
-                      child: const Padding(
-                        padding: EdgeInsets.symmetric(
-                          horizontal: 24,
-                          vertical: 8,
-                        ),
-                        child: Text(
-                          'Logout',
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                            color: AppColor.white,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            // const Divider(),
-            ListTile(
-              onTap: () {},
-              leading: const Icon(Icons.add),
-              horizontalTitleGap: 0,
-              title: const Text('Tambah Baru'),
-              trailing: const Icon(Icons.navigate_next),
-            ),
-            const Divider(),
-            ListTile(
-              onTap: () {},
-              leading: const Icon(Icons.south_west),
-              horizontalTitleGap: 0,
-              title: const Text('Pemasukan'),
-              trailing: const Icon(Icons.navigate_next),
-            ),
-            const Divider(
-              height: 1,
-            ),
-            ListTile(
-              onTap: () {},
-              leading: const Icon(Icons.north_east),
-              horizontalTitleGap: 0,
-              title: const Text('Pengeluaran'),
-              trailing: const Icon(Icons.navigate_next),
-            ),
-            const Divider(),
-            ListTile(
-              onTap: () {},
-              leading: const Icon(Icons.history),
-              horizontalTitleGap: 0,
-              title: const Text('Riwayat'),
-              trailing: const Icon(Icons.navigate_next),
-            ),
-            const Divider(
-              height: 1,
-            ),
-          ],
-        ),
-      ),
+      endDrawer: drawer(cUser: cUser, cHome: cHome,),
       body: Column(
         children: [
           Padding(
@@ -203,49 +86,54 @@ class _HomePageState extends State<HomePage> {
             ),
           ),
           Expanded(
-            child: ListView(
-              padding: const EdgeInsets.fromLTRB(20, 0, 20, 30),
-              children: [
-                const Text(
-                  'Pengeluaran Hari Ini',
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
+            child: RefreshIndicator(
+              onRefresh: () async {
+                cHome.getAnalysis(cUser.data.idUser!);
+              },
+              child: ListView(
+                padding: const EdgeInsets.fromLTRB(20, 0, 20, 30),
+                children: [
+                  const Text(
+                    'Pengeluaran Hari Ini',
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
-                ),
-                DView.spaceHeight(),
-                cardToday(context),
-                DView.spaceHeight(30),
-                Center(
-                  child: Container(
-                    height: 5,
-                    width: 80,
-                    decoration: BoxDecoration(
-                        color: AppColor.bg,
-                        borderRadius: BorderRadius.circular(30)),
+                  DView.spaceHeight(),
+                  cardToday(context),
+                  DView.spaceHeight(30),
+                  Center(
+                    child: Container(
+                      height: 5,
+                      width: 80,
+                      decoration: BoxDecoration(
+                          color: AppColor.bg,
+                          borderRadius: BorderRadius.circular(30)),
+                    ),
                   ),
-                ),
-                DView.spaceHeight(30),
-                const Text(
-                  'Pengeluaran Minggu Ini',
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
+                  DView.spaceHeight(30),
+                  const Text(
+                    'Pengeluaran Minggu Ini',
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
-                ),
-                DView.spaceHeight(),
-                weekly(),
-                DView.spaceHeight(30),
-                const Text(
-                  'Perbandingan Bulan Ini',
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
+                  DView.spaceHeight(),
+                  weekly(),
+                  DView.spaceHeight(30),
+                  const Text(
+                    'Perbandingan Bulan Ini',
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
-                ),
-                DView.spaceHeight(),
-                monthly(context),
-              ],
+                  DView.spaceHeight(),
+                  monthly(context),
+                ],
+              ),
             ),
           ),
         ],
@@ -455,6 +343,146 @@ class _HomePageState extends State<HomePage> {
           ],
         ),
       ],
+    );
+  }
+}
+
+class drawer extends StatelessWidget {
+  const drawer({
+    Key? key,
+    required this.cUser,
+    required this.cHome,
+  }) : super(key: key);
+
+  final CUser cUser;
+  final CHome cHome;
+
+  @override
+  Widget build(BuildContext context) {
+    return Drawer(
+      child: ListView(
+        children: [
+          DrawerHeader(
+            margin: const EdgeInsets.only(bottom: 0),
+            padding: const EdgeInsets.fromLTRB(20, 16, 16, 20),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.end,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    Image.asset(AppAsset.profile),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Obx(
+                          () => Text(
+                            cUser.data.name ?? '',
+                            style: const TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                        Obx(
+                          () => Text(
+                            cUser.data.email ?? '',
+                            style: const TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w400,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+                DView.spaceHeight(),
+                Material(
+                  color: AppColor.primary,
+                  borderRadius: BorderRadius.circular(30),
+                  child: InkWell(
+                    onTap: () async {
+                      Session.clearUser();
+                      bool? yes = await DInfo.dialogConfirmation(context,
+                          'Logout', 'You sure logout from this account');
+                      if (yes ?? false) {
+                        Fluttertoast.showToast(
+                            msg: "Logout berhasil",
+                            toastLength: Toast.LENGTH_SHORT,
+                            gravity: ToastGravity.BOTTOM,
+                            timeInSecForIosWeb: 1,
+                            backgroundColor: AppColor.green,
+                            textColor: AppColor.white,
+                            fontSize: 16.0);
+                        Get.off(() => const LoginPage());
+                      }
+                    },
+                    borderRadius: BorderRadius.circular(30),
+                    child: const Padding(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 24,
+                        vertical: 8,
+                      ),
+                      child: Text(
+                        'Logout',
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                          color: AppColor.white,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          // const Divider(),
+          ListTile(
+            onTap: () {
+              Get.to(() => AddHistoryPage())?.then((value) {
+                if (value ?? false) {
+                  cHome.getAnalysis(cUser.data.idUser!);
+                }
+              });
+            },
+            leading: const Icon(Icons.add),
+            horizontalTitleGap: 0,
+            title: const Text('Tambah Baru'),
+            trailing: const Icon(Icons.navigate_next),
+          ),
+          const Divider(),
+          ListTile(
+            onTap: () {},
+            leading: const Icon(Icons.south_west),
+            horizontalTitleGap: 0,
+            title: const Text('Pemasukan'),
+            trailing: const Icon(Icons.navigate_next),
+          ),
+          const Divider(
+            height: 1,
+          ),
+          ListTile(
+            onTap: () {},
+            leading: const Icon(Icons.north_east),
+            horizontalTitleGap: 0,
+            title: const Text('Pengeluaran'),
+            trailing: const Icon(Icons.navigate_next),
+          ),
+          const Divider(),
+          ListTile(
+            onTap: () {},
+            leading: const Icon(Icons.history),
+            horizontalTitleGap: 0,
+            title: const Text('Riwayat'),
+            trailing: const Icon(Icons.navigate_next),
+          ),
+          const Divider(
+            height: 1,
+          ),
+        ],
+      ),
     );
   }
 }
