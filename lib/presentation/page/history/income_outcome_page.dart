@@ -111,7 +111,7 @@ class _IncomeOutcomePageState extends State<IncomeOutcomePage> {
                   16,
                   index == 0 ? 16 : 8,
                   16,
-                  index == 9 ? 16 : 8,
+                  index == _.list.length - 1 ? 16 : 8,
                 ),
                 child: Row(
                   children: [
