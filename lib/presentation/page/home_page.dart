@@ -12,6 +12,7 @@ import 'package:money_record/presentation/controller/c_home.dart';
 import 'package:money_record/presentation/controller/c_user.dart';
 import 'package:money_record/presentation/page/auth/login_page.dart';
 import 'package:money_record/presentation/page/history/add_history_page.dart';
+import 'package:money_record/presentation/page/history/income_outcome_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -33,7 +34,10 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      endDrawer: drawer(cUser: cUser, cHome: cHome,),
+      endDrawer: drawer(
+        cUser: cUser,
+        cHome: cHome,
+      ),
       body: Column(
         children: [
           Padding(
@@ -454,7 +458,8 @@ class drawer extends StatelessWidget {
           ),
           const Divider(),
           ListTile(
-            onTap: () {},
+            onTap: () =>
+                Get.to(() => const IncomeOutcomePage(type: 'Pemasukan')),
             leading: const Icon(Icons.south_west),
             horizontalTitleGap: 0,
             title: const Text('Pemasukan'),
@@ -464,7 +469,7 @@ class drawer extends StatelessWidget {
             height: 1,
           ),
           ListTile(
-            onTap: () {},
+            onTap: () => Get.to(() => const IncomeOutcomePage(type: 'Pengeluaran')),
             leading: const Icon(Icons.north_east),
             horizontalTitleGap: 0,
             title: const Text('Pengeluaran'),
