@@ -51,7 +51,7 @@ class SourceHistory {
 
     if (responseBody['success']) {
       Fluttertoast.showToast(
-          msg: "Berhasil Tambah History",
+          msg: "Berhasil Tambah History $type",
           toastLength: Toast.LENGTH_SHORT,
           gravity: ToastGravity.BOTTOM,
           timeInSecForIosWeb: 1,
@@ -61,7 +61,7 @@ class SourceHistory {
     } else {
       if (responseBody['message'] == 'date') {
         Fluttertoast.showToast(
-            msg: "History dengan tanggal tersebut sudah pernah dibuat",
+            msg: "History $type pada tanggal tersebut sudah pernah dibuat",
             toastLength: Toast.LENGTH_SHORT,
             gravity: ToastGravity.BOTTOM,
             timeInSecForIosWeb: 1,
@@ -70,7 +70,7 @@ class SourceHistory {
             fontSize: 16.0);
       } else {
         Fluttertoast.showToast(
-            msg: "Berhasil Tambah History",
+            msg: "Gagal Tambah History $type",
             toastLength: Toast.LENGTH_SHORT,
             gravity: ToastGravity.BOTTOM,
             timeInSecForIosWeb: 1,
@@ -83,7 +83,10 @@ class SourceHistory {
     return responseBody['success'];
   }
 
-  static Future<List<History>> getIncomeOutcome(String idUser, String type) async {
+  static Future<List<History>> getIncomeOutcome(
+    String idUser,
+    String type,
+  ) async {
     String url = '${Api.history}income_outcome.php';
     Map? responseBody = await AppRequest.post(url, {
       'id_user': idUser,
@@ -91,7 +94,7 @@ class SourceHistory {
     });
 
     if (responseBody == null) return [];
-    
+
     if (responseBody['success']) {
       List list = responseBody['data'];
       return list.map((e) => History.fromJson(e)).toList();
@@ -100,7 +103,11 @@ class SourceHistory {
     return [];
   }
 
-  static Future<List<History>> getIncomeOutcomeSearch(String idUser, String type, String date) async {
+  static Future<List<History>> getIncomeOutcomeSearch(
+    String idUser,
+    String type,
+    String date,
+  ) async {
     String url = '${Api.history}income_outcome_search.php';
     Map? responseBody = await AppRequest.post(url, {
       'id_user': idUser,
@@ -118,4 +125,91 @@ class SourceHistory {
     return [];
   }
 
+  static Future<History?> whereId(
+    String idUser,
+    String idHistory,
+    String date,
+  ) async {
+    String url = '${Api.history}where_id.php';
+    Map? responseBody = await AppRequest.post(url, {
+      'id_user': idUser,
+      'id_history': idHistory,
+      'date': date,
+    });
+
+    if (responseBody == null) return null;
+
+    if (responseBody['success']) {
+      var e = responseBody['data'];
+      return History.fromJson(e);
+    }
+
+    return null;
+  }
+
+  static Future<bool> update(
+    String idHistory,
+    String idUser,
+    String date,
+    String type,
+    String details,
+    String total,
+  ) async {
+    String url = '${Api.history}update.php';
+    Map? responseBody = await AppRequest.post(url, {
+      'id_history': idHistory,
+      'id_user': idUser,
+      'date': date,
+      'type': type,
+      'details': details,
+      'total': total,
+      'updated_at': DateTime.now().toIso8601String(),
+    });
+
+    if (responseBody == null) return false;
+
+    if (responseBody['success']) {
+      Fluttertoast.showToast(
+          msg: "Berhasil Update History",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 1,
+          backgroundColor: AppColor.green,
+          textColor: AppColor.white,
+          fontSize: 16.0);
+    } else {
+      if (responseBody['message'] == 'date') {
+        Fluttertoast.showToast(
+            msg: "Tanggal History ada yang bentrok",
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIosWeb: 1,
+            backgroundColor: AppColor.chart,
+            textColor: AppColor.white,
+            fontSize: 16.0);
+      } else {
+        Fluttertoast.showToast(
+            msg: "Berhasil Update History",
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIosWeb: 1,
+            backgroundColor: AppColor.red,
+            textColor: AppColor.white,
+            fontSize: 16.0);
+      }
+    }
+
+    return responseBody['success'];
+  }
+
+  static Future<bool> delete(String idHistory) async {
+    String url = '${Api.history}delete.php';
+    Map? responseBody = await AppRequest.post(url, {
+      'id_history': idHistory,
+    });
+
+    if (responseBody == null) return false;
+
+    return responseBody['success'];
+  }
 }
