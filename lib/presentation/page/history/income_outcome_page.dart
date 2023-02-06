@@ -1,12 +1,16 @@
+import 'package:d_info/d_info.dart';
 import 'package:d_view/d_view.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:money_record/config/app_color.dart';
 import 'package:money_record/config/app_format.dart';
 import 'package:money_record/data/model/history.dart';
+import 'package:money_record/data/source/source_history.dart';
 import 'package:money_record/presentation/controller/c_user.dart';
 import 'package:money_record/presentation/controller/history/c_income_outcome.dart';
+import 'package:money_record/presentation/page/history/update_history_page.dart';
 
 class IncomeOutcomePage extends StatefulWidget {
   const IncomeOutcomePage({Key? key, required this.type}) : super(key: key);
@@ -27,6 +31,42 @@ class _IncomeOutcomePageState extends State<IncomeOutcomePage> {
 
   search() {
     cInOut.search(cUser.data.idUser, widget.type, controllerSearch.text);
+  }
+
+  menuOption(String value, History history) async {
+    if (value == 'update') {
+      Get.to(() => UpdateHistoryPage(
+            idHistory: history.idHistory!,
+            date: history.date!,
+          ))?.then((value) {
+        if (value ?? false) {
+          refresh();
+        }
+      });
+    } else if (value == 'delete') {
+      bool? yes = await DInfo.dialogConfirmation(
+        context,
+        'Hapus',
+        'Anda yakin untuk menghapus ${widget.type} ini?',
+        textNo: 'Batal',
+        textYes: 'Ya',
+      );
+      if (yes ?? false) {
+        Fluttertoast.showToast(
+          msg: "Delete ${history.type} berhasil",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 1,
+          backgroundColor: AppColor.red,
+          textColor: AppColor.white,
+          fontSize: 16.0,
+        );
+        bool success = await SourceHistory.delete(history.idHistory!);
+        if (success) {
+          refresh();
+        }
+      }
+    }
   }
 
   @override
@@ -135,9 +175,18 @@ class _IncomeOutcomePageState extends State<IncomeOutcomePage> {
                         textAlign: TextAlign.end,
                       ),
                     ),
-                    PopupMenuButton(
-                      itemBuilder: (context) => [],
-                      onSelected: (value) {},
+                    PopupMenuButton<String>(
+                      itemBuilder: (context) => [
+                        const PopupMenuItem(
+                          value: 'update',
+                          child: Text('Update'),
+                        ),
+                        const PopupMenuItem(
+                          value: 'delete',
+                          child: Text('Delete'),
+                        ),
+                      ],
+                      onSelected: (value) => menuOption(value, history),
                     ),
                   ],
                 ),
