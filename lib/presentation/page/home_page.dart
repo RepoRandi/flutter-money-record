@@ -4,6 +4,7 @@ import 'package:d_view/d_view.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:money_record/config/app_asset.dart';
 import 'package:money_record/config/app_color.dart';
 import 'package:money_record/config/app_format.dart';
@@ -12,6 +13,7 @@ import 'package:money_record/presentation/controller/c_home.dart';
 import 'package:money_record/presentation/controller/c_user.dart';
 import 'package:money_record/presentation/page/auth/login_page.dart';
 import 'package:money_record/presentation/page/history/add_history_page.dart';
+import 'package:money_record/presentation/page/history/detail_history_page.dart';
 import 'package:money_record/presentation/page/history/history_page.dart';
 import 'package:money_record/presentation/page/history/income_outcome_page.dart';
 
@@ -179,31 +181,43 @@ class _HomePageState extends State<HomePage> {
               );
             }),
           ),
-          Container(
-            margin: const EdgeInsets.fromLTRB(16, 20, 0, 20),
-            padding: const EdgeInsets.only(top: 6, right: 6, bottom: 6),
-            decoration: const BoxDecoration(
-              color: AppColor.white,
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(6),
-                bottomLeft: Radius.circular(6),
-              ),
-            ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: const [
-                Text(
-                  'Selengkapnya',
-                  style: TextStyle(
-                    fontSize: 16,
-                    color: AppColor.primary,
+          GestureDetector(
+            onTap: () {
+              Get.to(
+                () => DetailHistoryPage(
+                  idUser: '${cUser.data.idUser}',
+                  date: DateFormat('yyyy-MM-dd').format(
+                    DateTime.now(),
                   ),
                 ),
-                Icon(
-                  Icons.navigate_next,
-                  color: AppColor.primary,
+              );
+            },
+            child: Container(
+              margin: const EdgeInsets.fromLTRB(16, 20, 0, 20),
+              padding: const EdgeInsets.only(top: 6, right: 6, bottom: 6),
+              decoration: const BoxDecoration(
+                color: AppColor.white,
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(6),
+                  bottomLeft: Radius.circular(6),
                 ),
-              ],
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: const [
+                  Text(
+                    'Selengkapnya',
+                    style: TextStyle(
+                      fontSize: 16,
+                      color: AppColor.primary,
+                    ),
+                  ),
+                  Icon(
+                    Icons.navigate_next,
+                    color: AppColor.primary,
+                  ),
+                ],
+              ),
             ),
           ),
         ],
@@ -470,7 +484,8 @@ class drawer extends StatelessWidget {
             height: 1,
           ),
           ListTile(
-            onTap: () => Get.to(() => const IncomeOutcomePage(type: 'Pengeluaran')),
+            onTap: () =>
+                Get.to(() => const IncomeOutcomePage(type: 'Pengeluaran')),
             leading: const Icon(Icons.north_east),
             horizontalTitleGap: 0,
             title: const Text('Pengeluaran'),
