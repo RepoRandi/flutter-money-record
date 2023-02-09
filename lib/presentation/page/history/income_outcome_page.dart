@@ -10,6 +10,7 @@ import 'package:money_record/data/model/history.dart';
 import 'package:money_record/data/source/source_history.dart';
 import 'package:money_record/presentation/controller/c_user.dart';
 import 'package:money_record/presentation/controller/history/c_income_outcome.dart';
+import 'package:money_record/presentation/page/history/detail_history_page.dart';
 import 'package:money_record/presentation/page/history/update_history_page.dart';
 
 class IncomeOutcomePage extends StatefulWidget {
@@ -153,42 +154,53 @@ class _IncomeOutcomePageState extends State<IncomeOutcomePage> {
                   16,
                   index == _.list.length - 1 ? 16 : 8,
                 ),
-                child: Row(
-                  children: [
-                    DView.spaceWidth(),
-                    Text(
-                      AppFormat.date(history.date!),
-                      style: const TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                        color: AppColor.primary,
+                child: InkWell(
+                  borderRadius: BorderRadius.circular(4),
+                  onTap: () {
+                    Get.to(
+                      () => DetailHistoryPage(
+                        idUser: '${history.idUser}',
+                        date: '${history.date}',
                       ),
-                    ),
-                    Expanded(
-                      child: Text(
-                        AppFormat.currency(history.total!),
+                    );
+                  },
+                  child: Row(
+                    children: [
+                      DView.spaceWidth(),
+                      Text(
+                        AppFormat.date(history.date!),
                         style: const TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.bold,
                           color: AppColor.primary,
                         ),
-                        textAlign: TextAlign.end,
                       ),
-                    ),
-                    PopupMenuButton<String>(
-                      itemBuilder: (context) => [
-                        const PopupMenuItem(
-                          value: 'update',
-                          child: Text('Update'),
+                      Expanded(
+                        child: Text(
+                          AppFormat.currency(history.total!),
+                          style: const TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                            color: AppColor.primary,
+                          ),
+                          textAlign: TextAlign.end,
                         ),
-                        const PopupMenuItem(
-                          value: 'delete',
-                          child: Text('Delete'),
-                        ),
-                      ],
-                      onSelected: (value) => menuOption(value, history),
-                    ),
-                  ],
+                      ),
+                      PopupMenuButton<String>(
+                        itemBuilder: (context) => [
+                          const PopupMenuItem(
+                            value: 'update',
+                            child: Text('Update'),
+                          ),
+                          const PopupMenuItem(
+                            value: 'delete',
+                            child: Text('Delete'),
+                          ),
+                        ],
+                        onSelected: (value) => menuOption(value, history),
+                      ),
+                    ],
+                  ),
                 ),
               );
             },
