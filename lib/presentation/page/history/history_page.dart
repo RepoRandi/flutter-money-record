@@ -12,6 +12,8 @@ import 'package:money_record/presentation/controller/c_user.dart';
 import 'package:money_record/presentation/controller/history/c_history.dart';
 import 'package:money_record/presentation/page/history/update_history_page.dart';
 
+import 'detail_history_page.dart';
+
 class HistoryPage extends StatefulWidget {
   const HistoryPage({Key? key}) : super(key: key);
 
@@ -141,44 +143,55 @@ class _HistoryPageState extends State<HistoryPage> {
                   16,
                   index == _.list.length - 1 ? 16 : 8,
                 ),
-                child: Row(
-                  children: [
-                    DView.spaceWidth(10),
-                    history.type == 'Pemasukan'
-                        ? const Icon(
-                            Icons.south_west,
-                            color: AppColor.green,
-                          )
-                        : const Icon(
-                            Icons.north_east,
-                            color: AppColor.red,
-                          ),
-                    DView.spaceWidth(10),
-                    Text(
-                      AppFormat.date(history.date!),
-                      style: const TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                        color: AppColor.primary,
+                child: InkWell(
+                  borderRadius: BorderRadius.circular(4),
+                  onTap: () {
+                    Get.to(
+                          () => DetailHistoryPage(
+                        idUser: '${history.idUser}',
+                        date: '${history.date}',
                       ),
-                    ),
-                    Expanded(
-                      child: Text(
-                        AppFormat.currency(history.total!),
+                    );
+                  },
+                  child: Row(
+                    children: [
+                      DView.spaceWidth(10),
+                      history.type == 'Pemasukan'
+                          ? const Icon(
+                              Icons.south_west,
+                              color: AppColor.green,
+                            )
+                          : const Icon(
+                              Icons.north_east,
+                              color: AppColor.red,
+                            ),
+                      DView.spaceWidth(10),
+                      Text(
+                        AppFormat.date(history.date!),
                         style: const TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.bold,
                           color: AppColor.primary,
                         ),
-                        textAlign: TextAlign.end,
                       ),
-                    ),
-                    DView.spaceWidth(10),
-                    IconButton(
-                      onPressed: () => delete(history),
-                      icon: const Icon(Icons.delete_forever, color: AppColor.red,),
-                    )
-                  ],
+                      Expanded(
+                        child: Text(
+                          AppFormat.currency(history.total!),
+                          style: const TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                            color: AppColor.primary,
+                          ),
+                          textAlign: TextAlign.end,
+                        ),
+                      ),
+                      DView.spaceWidth(10),
+                      IconButton(
+                        onPressed: () => delete(history),
+                        icon: const Icon(Icons.delete_forever, color: AppColor.red,),
+                      )
+                    ],
+                  ),
                 ),
               );
             },
