@@ -185,10 +185,11 @@ class _HomePageState extends State<HomePage> {
             onTap: () {
               Get.to(
                 () => DetailHistoryPage(
-                  idUser: '${cUser.data.idUser}',
+                  idUser: cUser.data.idUser!,
                   date: DateFormat('yyyy-MM-dd').format(
                     DateTime.now(),
                   ),
+                  type: 'Pengeluaran',
                 ),
               );
             },
