@@ -10,7 +10,6 @@ import 'package:money_record/data/model/history.dart';
 import 'package:money_record/data/source/source_history.dart';
 import 'package:money_record/presentation/controller/c_user.dart';
 import 'package:money_record/presentation/controller/history/c_history.dart';
-import 'package:money_record/presentation/page/history/update_history_page.dart';
 
 import 'detail_history_page.dart';
 
@@ -147,9 +146,10 @@ class _HistoryPageState extends State<HistoryPage> {
                   borderRadius: BorderRadius.circular(4),
                   onTap: () {
                     Get.to(
-                          () => DetailHistoryPage(
-                        idUser: '${history.idUser}',
-                        date: '${history.date}',
+                      () => DetailHistoryPage(
+                        idUser: cUser.data.idUser!,
+                        date: history.date!,
+                        type: history.type!,
                       ),
                     );
                   },
@@ -188,7 +188,10 @@ class _HistoryPageState extends State<HistoryPage> {
                       DView.spaceWidth(10),
                       IconButton(
                         onPressed: () => delete(history),
-                        icon: const Icon(Icons.delete_forever, color: AppColor.red,),
+                        icon: const Icon(
+                          Icons.delete_forever,
+                          color: AppColor.red,
+                        ),
                       )
                     ],
                   ),
