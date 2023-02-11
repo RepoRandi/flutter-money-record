@@ -159,8 +159,9 @@ class _IncomeOutcomePageState extends State<IncomeOutcomePage> {
                   onTap: () {
                     Get.to(
                       () => DetailHistoryPage(
-                        idUser: '${history.idUser}',
-                        date: '${history.date}',
+                        idUser: cUser.data.idUser!,
+                        date: history.date!,
+                        type: history.type!,
                       ),
                     );
                   },
