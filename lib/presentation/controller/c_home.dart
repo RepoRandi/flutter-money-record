@@ -49,8 +49,8 @@ class CHome extends GetxController {
     double different = (today - yesterday).abs();
     bool isSame = today.isEqual(yesterday);
     bool isPlus = today.isGreaterThan(yesterday);
-    double byYesterday = yesterday == 0 ? 1 : yesterday;
-    double percent = (different / byYesterday) * 100;
+    double dividerToday = (today + yesterday) == 0 ? 1 : (today + yesterday);
+    double percent = (different / dividerToday) * 100;
     _todayPercent.value = isSame
         ? '100% sama dengan kemaren'
         : isPlus
@@ -64,13 +64,13 @@ class CHome extends GetxController {
     _monthDifferent.value = (monthIncome -  monthOutcome).abs();
     bool isSameMonth = monthIncome.isEqual(monthOutcome);
     bool isPlusMonth = monthIncome.isGreaterThan(monthOutcome);
-    double byOutcome = monthOutcome == 0 ? 1 : monthOutcome;
-    double percentMonth = (monthDifferent / byOutcome) * 100;
-    _percentIncome.value = ((monthDifferent / byOutcome) * 100).toStringAsFixed(1);
+    double dividerMonth = ( monthIncome + monthOutcome) == 0 ? 1 : ( monthIncome + monthOutcome);
+    double percentMonth = (monthDifferent / dividerMonth) * 100;
+    _percentIncome.value = percentMonth.toStringAsFixed(1);
     _monthPercent.value = isSameMonth
         ? 'Pemasukan\n100% sama\ndengan Pengeluaran'
         : isPlusMonth
-            ? 'Pemasukan\nlebih besar ${percentMonth.toStringAsFixed(1)}%\ndari Pengeluaran'
-            : 'Pemasukan\nlebih kecil ${percentMonth.toStringAsFixed(1)}%\ndari Pengeluaran';
+            ? 'Pemasukan\nlebih besar $percentIncome%\ndari Pengeluaran'
+            : 'Pemasukan\nlebih kecil $percentIncome%\ndari Pengeluaran';
   }
 }
